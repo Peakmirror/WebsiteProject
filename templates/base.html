@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}BookIt{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+</head>
+<body>
+    <!-- Top navigation used across all pages -->
+    <nav>
+        <a class="nav-brand" href="{{ url_for('index') }}">&#9670; BookIt</a>
+        <ul class="nav-links">
+            {% if session.username %}
+                <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                <li><a href="{{ url_for('book') }}">Book</a></li>
+                <li><a href="{{ url_for('my_appointments') }}">My Appointments</a></li>
+                {% if session.is_admin %}
+                    <li><a href="{{ url_for('admin') }}">Admin</a></li>
+                {% endif %}
+                <li><a href="{{ url_for('logout') }}" class="btn-outline">Log out</a></li>
+            {% else %}
+                <li><a href="{{ url_for('login') }}">Log in</a></li>
+                <li><a href="{{ url_for('register') }}" class="btn-outline">Sign up</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+
+    <main>
+        <!-- Flash messages (success/error/info) shown after actions -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                <div class="flash-messages">
+                    {% for category, message in messages %}
+                        <div class="flash {{ category }}">{{ message }}</div>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        {% endwith %}
+
+        <!-- Each page injects its own content here -->
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Simple footer shared by all pages -->
+    <footer>
+        &copy; 2026 BookIt &mdash; Online Appointment Booking
+    </footer>
+</body>
+</html>

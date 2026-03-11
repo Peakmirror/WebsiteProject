@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+{% block title %}Admin Panel — BookIt{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1>Admin Panel</h1>
+    <p>Manage services, view all appointments, and control user roles.</p>
+</div>
+
+<!-- Services area: list, remove, and add offerings -->
+<div class="card">
+    <h2>Services</h2>
+    {% if services %}
+    <table style="margin-bottom: 1.5rem;">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for svc in services %}
+            <tr>
+                <td>{{ svc[0] }}</td>
+                <td>{{ svc[1] }}</td>
+                <td>${{ "%.2f" | format(svc[2]) }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('admin_remove_service', svc_id=svc[0]) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Remove this service?')">Remove</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted" style="margin-bottom: 1rem;">No services added yet.</p>
+    {% endif %}
+
+    <form method="POST" action="{{ url_for('admin_add_service') }}"
+          style="display: flex; gap: 0.75rem; align-items: flex-end; flex-wrap: wrap;">
+        <div class="form-group" style="margin: 0; flex: 1; min-width: 160px;">
+            <label>Service Name</label>
+            <input type="text" name="name" required placeholder="e.g. Consultation" />
+        </div>
+        <div class="form-group" style="margin: 0; flex: 0 0 130px;">
+            <label>Price ($)</label>
+            <input type="number" name="price" step="0.01" min="0" required placeholder="0.00" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="margin-bottom: 1.1rem;">Add Service</button>
+    </form>
+</div>
+
+<!-- All bookings made by users -->
+<div class="card">
+    <h2>All Appointments</h2>
+    {% if appointments %}
+    <table>
+        <thead>
+            <tr>
+                <th>User</th>
+                <th>Date &amp; Time</th>
+                <th>Service</th>
+                <th>Price</th>
+                <th>Phone</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+            <tr>
+                <td>{{ appt.username }}</td>
+                <td>{{ appt.appointment_time | replace("T", " at ") }}</td>
+                <td>{{ appt.service_name or "—" }}</td>
+                <td>{% if appt.price %}${{ "%.2f" | format(appt.price) }}{% else %}—{% endif %}</td>
+                <td>{{ appt.phone_number or "—" }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p class="text-muted">No appointments booked yet.</p>
+    {% endif %}
+</div>
+
+<!-- User roles section (promote users to admin) -->
+<div class="card">
+    <h2>Users</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for user in users %}
+            <tr>
+                <td>{{ user.username }}</td>
+                <td>{{ user.email or "—" }}</td>
+                <td>
+                    {% if user.is_admin %}
+                        <span class="badge badge-admin">Admin</span>
+                    {% else %}
+                        User
+                    {% endif %}
+                </td>
+                <td>
+                    {% if not user.is_admin %}
+                    <form method="POST" action="{{ url_for('admin_promote') }}" style="display: inline;">
+                        <input type="hidden" name="username" value="{{ user.username }}" />
+                        <button type="submit" class="btn btn-secondary btn-sm">Make Admin</button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

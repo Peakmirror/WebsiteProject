@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% block title %}Create Account — BookIt{% endblock %}
+
+{% block content %}
+<div class="card form-card">
+    <h1>Create Account</h1>
+    <!-- Registration form for new users -->
+    <form method="POST" action="{{ url_for('register') }}">
+        <div class="form-group">
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required autofocus autocomplete="email" />
+        </div>
+        <div class="form-group">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required autocomplete="username" />
+        </div>
+        <div class="form-group">
+            <label for="password">Password</label>
+            <input type="password" id="password" name="password" required autocomplete="new-password" />
+            <p class="form-hint">At least 8 characters — must include an uppercase letter, a digit, and a special character.</p>
+        </div>
+        <button type="submit" class="btn btn-primary btn-block mt-2">Create Account</button>
+    </form>
+    <!-- Link back for users who already signed up -->
+    <p class="text-center text-muted mt-2">
+        Already have an account? <a href="{{ url_for('login') }}" style="color: var(--primary);">Log in</a>
+    </p>
+</div>
+{% endblock %}

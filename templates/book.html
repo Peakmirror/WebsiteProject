@@ -1,0 +1,57 @@
+{% extends "base.html" %}
+{% block title %}Book Appointment — BookIt{% endblock %}
+
+{% block content %}
+<!-- Page intro for the booking flow -->
+<div class="page-header">
+    <h1>Book an Appointment</h1>
+    <p>Choose a service and a time that works for you.</p>
+</div>
+
+<div class="card" style="max-width: 540px;">
+    <!-- Friendly states when booking is not possible yet -->
+    {% if not services %}
+        <p class="text-muted">No services are currently available. Please check back later.</p>
+    {% elif not slots %}
+        <p class="text-muted">No open time slots this month. Please check back next month.</p>
+    {% else %}
+    <!-- Main booking form (service, slot, and contact details) -->
+    <form method="POST" action="{{ url_for('book') }}">
+        <div class="form-group">
+            <label for="service_id">Service</label>
+            <select name="service_id" id="service_id" required>
+                <option value="">— Select a service —</option>
+                {% for svc in services %}
+                <option value="{{ svc[0] }}">{{ svc[1] }} &mdash; ${{ "%.2f" | format(svc[2]) }}</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="slot">Date &amp; Time</label>
+            <select name="slot" id="slot" required>
+                <option value="">— Select a slot —</option>
+                {% for day, hour in slots %}
+                <option value="{{ day }}:{{ hour }}">{{ month }}/{{ day }}/{{ year }} at {{ "%02d" | format(hour) }}:00</option>
+                {% endfor %}
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="email">Confirmation Email</label>
+            <input type="email" id="email" name="email" value="{{ user_email or '' }}" required />
+        </div>
+
+        <div class="form-group">
+            <label for="phone">Phone Number <span class="form-hint" style="display: inline;">(optional)</span></label>
+            <input type="tel" id="phone" name="phone" placeholder="e.g. +1 555 123 4567" />
+        </div>
+
+        <div style="display: flex; gap: 0.75rem; margin-top: 1.25rem;">
+            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+            <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+    {% endif %}
+</div>
+{% endblock %}

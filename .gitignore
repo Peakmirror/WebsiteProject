@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+.venv/
+venv/
+env/
+
+# Database (contains real user data — never commit this)
+*.db
+*.sqlite3
+
+# Environment variables (contains secrets)
+.env
+
+# The rockyou wordlist is large and not needed in the repo
+rockyou.txt
+
+# Editor and OS noise
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,37 @@
+{% extends "base.html" %}
+{% block title %}BookIt — Online Appointment Booking{% endblock %}
+
+{% block content %}
+<!-- Main hero section for first-time visitors -->
+<div class="hero">
+    <h1>Book Your Appointment Online</h1>
+    <p>Simple and fast scheduling. Pick a service, choose a time, and you're all set.</p>
+    <div class="hero-buttons">
+        <a href="{{ url_for('register') }}" class="btn btn-primary">Get Started</a>
+        <a href="{{ url_for('login') }}" class="btn btn-secondary">Log In</a>
+    </div>
+</div>
+
+<!-- Quick explanation of the booking flow -->
+<div class="card" style="max-width: 720px; margin: 0 auto;">
+    <h2>How it works</h2>
+    <div class="how-it-works">
+        <div class="how-step">
+            <strong>1. Create an account</strong>
+            <p class="text-muted">Register with your email and a secure password.</p>
+        </div>
+        <div class="how-step">
+            <strong>2. Pick a service</strong>
+            <p class="text-muted">Browse our available services and prices.</p>
+        </div>
+        <div class="how-step">
+            <strong>3. Choose a time</strong>
+            <p class="text-muted">Select any open date and hour that works for you.</p>
+        </div>
+        <div class="how-step">
+            <strong>4. Done!</strong>
+            <p class="text-muted">Get a confirmation email and manage bookings anytime.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

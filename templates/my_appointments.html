@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+{% block title %}My Appointments — BookIt{% endblock %}
+
+{% block content %}
+<!-- Header text for the appointments page -->
+<div class="page-header">
+    <h1>My Appointments</h1>
+    <p>View and manage all your bookings.</p>
+</div>
+
+{% if appointments %}
+<!-- Full list of bookings with status and cancel action -->
+<div class="card">
+    <table>
+        <thead>
+            <tr>
+                <th>Date &amp; Time</th>
+                <th>Service</th>
+                <th>Price</th>
+                <th>Status</th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for appt in appointments %}
+            {% set is_upcoming = appt.appointment_time >= now %}
+            <tr>
+                <td>{{ appt.appointment_time | replace("T", " at ") }}</td>
+                <td>{{ appt.service_name or "—" }}</td>
+                <td>{% if appt.price %}${{ "%.2f" | format(appt.price) }}{% else %}—{% endif %}</td>
+                <td>
+                    {% if is_upcoming %}
+                        <span class="badge badge-upcoming">Upcoming</span>
+                    {% else %}
+                        <span class="badge badge-past">Past</span>
+                    {% endif %}
+                </td>
+                <td>
+                    {% if is_upcoming %}
+                    <form method="POST" action="{{ url_for('cancel', appt_id=appt.id) }}" style="display: inline;">
+                        <button type="submit" class="btn btn-danger btn-sm"
+                            onclick="return confirm('Are you sure you want to cancel this appointment?')">
+                            Cancel
+                        </button>
+                    </form>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<!-- Empty state with quick path to booking -->
+<div class="card empty-state">
+    <p>You have no appointments yet.</p>
+    <a href="{{ url_for('book') }}" class="btn btn-primary">Book an Appointment</a>
+</div>
+{% endif %}
+{% endblock %}
