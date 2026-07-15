@@ -25,8 +25,8 @@ Admins can manage services, view all appointments, and promote users.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/your-username/your-repo.git
-cd your-repo
+git clone https://github.com/Peakmirror/WebsiteProject
+cd WebsiteProject
 ```
 
 ### 2. Create a virtual environment and install dependencies
@@ -63,7 +63,7 @@ Open [http://localhost:5000](http://localhost:5000) in your browser.
 Username: `admin`  
 Password: `Admin@1234!`
 
-Change these immediately after first login.
+CHANGE THESE IMMEDEATLY AFTER FIRST LOGIN.
 
 ## Email notifications (optional)
 
