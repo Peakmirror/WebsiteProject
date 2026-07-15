@@ -75,3 +75,9 @@ If these are not set the app runs fine — confirmation and reset emails are sim
 - `users.db` is created automatically on first run — do not commit it.
 - `rockyou.txt` is used locally to block common passwords — download separately if needed.
 - Do **not** run with `debug=True` in production.
+
+
+## Future plans
+- Add more features, like better usability for site admins, technician availability (some others)
+- Make the frontend more appealing and nicer to look at
+Note that this is on the back burner currently but if you happen to have interest in this project, please feel free to contact me (or add them yourself)
